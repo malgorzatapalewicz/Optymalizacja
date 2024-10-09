@@ -1,24 +1,21 @@
-//Ten plik nie powinien byæ edytowany
+//Ten plik nie powinien byc edytowany
 
 #include"matrix.h"
 
-matrix::matrix(double L)
-{
+matrix::matrix(double L){ //konstruktor konwertujÄ…cy int/double na macierz
 	n = m = 1;
 	M = new double*[1];
 	M[0] = new double[1];
 	M[0][0] = L;
 }
 
-matrix::matrix(int nv, int mv, double L)
-{
+matrix::matrix(int nv, int mv, double L){
 	if (nv <= 0 || mv <= 0)
 		throw string("matrix::matrix(int,int,double):\nwymiary macierzy musza byc dodatnie");
 	n = nv;
 	m = mv;
 	M = new double*[n];
-	for (int i = 0; i < n; ++i)
-	{
+	for (int i = 0; i < n; ++i){
 		M[i] = new double[m];
 		for (int j = 0; j < m; ++j)
 			M[i][j] = L;

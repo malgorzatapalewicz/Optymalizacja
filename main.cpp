@@ -1,10 +1,10 @@
 /*********************************************
-Kod stanowi uzupe�nienie materia��w do �wicze�
+Kod stanowi uzupelnienie materialow do cwiczen
 w ramach przedmiotu metody optymalizacji.
 Kod udost�pniony na licencji CC BY-SA 3.0
-Autor: dr in�. �ukasz Sztangret
+Autor: dr inz. Lukasz Sztangret
 Katedra Informatyki Stosowanej i Modelowania
-Akademia G�rniczo-Hutnicza
+Akademia Gorniczo-Hutnicza
 Data ostatniej modyfikacji: 19.09.2023
 *********************************************/
 
@@ -29,21 +29,21 @@ int main()
 		cerr << "ERROR:\n";
 		cerr << EX_INFO << endl << endl;
 	}
-	system("pause");
+	//system("pause");
 	return 0;
 }
 
-void lab0()
-{
+void lab0(){
+
 	//Funkcja testowa
-	double epsilon = 1e-2;
-	int Nmax = 10000;
+	double epsilon = 1e-2; //tolerancja błedu
+	int Nmax = 10000; //maksymalna liczba iteracji
 	matrix lb(2, 1, -5), ub(2, 1, 5), a(2, 1);
 	solution opt;
 	a(0) = -1;
 	a(1) = 2;
 	opt = MC(ff0T, 2, lb, ub, epsilon, Nmax, a); //funkcja celu, jej nazwa jest jednoczenise jej adresem, wymiar, ...,
-    // epsioln - pierwsze kruyterium zarzymania, Nmax - drugie kryteruym  zatrzymania, a - wposlczynnnik co podaj uzytkownik
+    // epsioln - pierwsze kryterium zatrzymania, Nmax - drugie kryteruym  zatrzymania, a - wposlczynnnik co podaj uzytkownik
 	cout << opt << endl << endl;
 	solution::clear_calls();
 
@@ -67,8 +67,7 @@ void lab0()
 	Y[1].~matrix();
 }
 
-void lab1()
-{
+void lab1(){
 
 }
 
