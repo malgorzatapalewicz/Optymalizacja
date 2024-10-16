@@ -31,3 +31,19 @@ matrix df0(double t, matrix Y, matrix ud1, matrix ud2){
 	dY(1) = ((t <= ud2(1))*ud2(0) - m*g*l*sin(Y(0)) - b*Y(1)) / I; //(moment sily - czas dzialania sily) / moment bezwladnosci
 	return dY;
 }
+
+matrix ff1T(matrix x, matrix ud1, matrix ud2){
+    matrix y;
+    y = pow(x, 2); //x^2
+    return y;
+}
+
+matrix ff2T(matrix x, matrix ud1, matrix ud2) {
+    matrix y;
+    int newX = m2d(x);
+     y = -cos(0.1 * newX) * exp(-pow(0.1 * newX - 2 * M_PI, 2)) + 0.002 * pow(0.1 * x, 2);
+
+    return y;
+}
+
+
