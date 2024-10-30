@@ -22,7 +22,7 @@ int main()
 {
 	try
 	{
-		lab1();
+		lab2();
 	}
 	catch (string EX_INFO)
 	{
@@ -76,7 +76,7 @@ void lab1(){
 
     double *p = expansion(ff2T, x0, d, alfa,Nmax);
     cout << p[0]<< '\t' << p[1] << endl;
-    //solution::clear_calls();
+    solution::clear_calls();
 
 
 
@@ -204,19 +204,54 @@ void lab1(){
   // punknt c zawsze po lewej a d po prawjke  przy fibbocianego, tutaj mamy 4 warunki bo nie wiadomo jak leza punkty
   //sprawdzamyn gdzie znajdyje sie punkt d
   // eroer wystapi jesli d bedzie poza przedzialem [a,b] - linijka 32 w pseudokodzie
+}
+
+void lab2(){
+
+    double epsilon = 1e-3;
+    int Nmax = 10000; //maksymalna liczba iteracji
+    double alpha = 0.5;
+    double x1, x2;
+
+//    x1 = -1 + m2d(rand_mat(1, 1)) * 2;
+//    x2 = -1 + m2d(rand_mat(1, 1)) * 2;
+//
+//    matrix x0(2, 1); //macierz 2x1 w przedziale [-1, 1]
+//    x0(0, 0) = x1;
+//    x0(1, 0) = x2;
 
 
+  //  solution opt = HJ(ff3T, x0, 0.01, alpha, epsilon, Nmax);
+//    cout << "Optymalne x: (" << opt.x(0) << ", " << opt.x(1) << ")"<< endl;
+//    cout << "Wartość funkcji celu: " << opt.y << endl;
 
+    std::ofstream file("wyniki_optymalizacji.csv");
+    file << "x1(0);x2(0);x1*;x2*;y;Liczba wywołań;Czy Globalne\n";
 
+    for(int i = 0; i < 100; i++){
+        x1 = -1 + m2d(rand_mat(1, 1)) * 2;
+        x2 = -1 + m2d(rand_mat(1, 1)) * 2;
 
+        matrix x0(2, 1); //macierz 2x1 w przedziale [-1, 1]
+        x0(0, 0) = x1;
+        x0(1, 0) = x2;
+        solution opt = HJ(ff3T, x0, 0.001, alpha, epsilon, Nmax);
 
+        file << replaceDotWithComma(x1) << ";"
+             << replaceDotWithComma(x2) << ";"
+             << replaceDotWithComma(opt.x(0) ) << ";"
+             << replaceDotWithComma(opt.x(1)) << ";"
+             << replaceDotWithComma(m2d(opt.y)) << ";"
+             << solution::f_calls << ";"
+             << (ifGlobal(m2d(opt.y)) ? "TAK" : "NIE") << "\n";
+
+        solution::clear_calls();
+    }
+
+    file.close();
 
 }
 
-void lab2()
-{
-
-}
 
 void lab3()
 {

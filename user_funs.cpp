@@ -32,6 +32,8 @@ matrix df0(double t, matrix Y, matrix ud1, matrix ud2){
 	return dY;
 }
 
+
+
 matrix ff1T(matrix x, matrix ud1, matrix ud2){
     matrix y;
     y = pow(x, 2); //x^2
@@ -45,5 +47,28 @@ matrix ff2T(matrix x, matrix ud1, matrix ud2) {
 
     return y;
 }
+
+matrix ff3T(matrix x, matrix ud1, matrix ud2) {
+    matrix y(1, 1);
+    y(0, 0) = pow(x(0), 2) + pow(x(1), 2) - cos(2.5 * M_PI * x(0)) - cos(2.5 * M_PI * x(1)) + 2;
+    return y;
+}
+
+std::string replaceDotWithComma(double value) {
+    std::ostringstream oss;
+    oss << value;
+    std::string strValue = oss.str();
+    std::replace(strValue.begin(), strValue.end(), '.', ',');
+    return strValue;
+}
+
+bool ifGlobal(double y){
+    return (y < 0.1);
+}
+
+
+
+
+
 
 
