@@ -34,6 +34,8 @@ matrix df0(double t, matrix Y, matrix ud1, matrix ud2){
 
 
 
+
+
 matrix ff1T(matrix x, matrix ud1, matrix ud2){
     matrix y;
     y = pow(x, 2); //x^2

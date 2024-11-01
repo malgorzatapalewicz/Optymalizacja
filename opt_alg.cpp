@@ -170,6 +170,7 @@ solution HJ(matrix(*ff)(matrix, matrix, matrix), matrix x0, double s, double alp
         Xopt = XB;
         cout << "x1: " << XB.x(0) << ", x2: " << XB.x(1) << ", y: " << XB.y << endl;
 
+
         while(true){
             solution::f_calls++;
             X = HJ_trial(ff, XB, s, ud1, ud2);
@@ -246,16 +247,87 @@ solution Rosen(matrix(*ff)(matrix, matrix, matrix), matrix x0, matrix s0, double
 {
 	try
 	{
-		solution Xopt;
-		//Tu wpisz kod funkcji
+        solution Xopt, X, Xt;
+        int *n = get_size(x0);
+        int dim = n[0];
+        matrix D = ident_mat(dim);
+        matrix s(dim, 1, m2d(s0)), stepDistance(dim, 1), failCount(dim, 1);
 
-		return Xopt;
-	}
-	catch (string ex_info)
-	{
+
+        X.x = x0;
+        X.y = ff(X.x, ud1, ud2);
+        Xopt = X;
+
+        while (true) {
+            solution::f_calls++;
+
+            for (int i = 0; i < dim; ++i) {
+                Xt.x = X.x + s(i) * D[i];
+                Xt.y = ff(Xt.x, ud1, ud2);
+
+                if (Xt.y < X.y) {
+                    X = Xt;
+                    stepDistance(i) += s(i);
+                    s(i) *= alpha;
+
+                    if (Xt.y < Xopt.y) {
+                        Xopt = Xt;
+                    }
+                } else {
+                    failCount(i)++;
+                    s(i) *= -beta;
+                }
+            }
+
+            bool change = true;
+            for (int i = 0; i < dim; ++i) {
+                if (failCount(i) == 0 || stepDistance(i) == 0) {
+                    change = false;
+                    break;
+                }
+            }
+
+
+            if (change) {
+                matrix Q(dim, dim), v(dim, 1);
+
+                for (int i = 0; i < dim; ++i) {
+                    Q.set_col(stepDistance, i);
+                    v = Q[i] / norm(Q[i]);
+                    D.set_col(v, i);
+
+                    for (int j = 0; j < i; ++j) {
+                        v = v - (trans(Q[i]) * D[j]) * D[j];
+                    }
+
+                    D.set_col(v, i);
+                }
+
+                s = matrix(dim, 1);
+                for (int i = 0; i < dim; ++i) s(i) = m2d(s0);
+                stepDistance = matrix(dim, 1);
+                failCount = matrix(dim, 1);
+            }
+
+            double max_s = abs(s(0));
+            for (int i = 1; i < dim; ++i) {
+                double current_abs = abs(s(i));
+                if (current_abs > max_s) {
+                    max_s = current_abs;
+                }
+            }
+
+            if (max_s < epsilon || solution::f_calls > Nmax) {
+                return Xopt;
+            }
+
+        }
+
+	} catch (string ex_info){
 		throw ("solution Rosen(...):\n" + ex_info);
 	}
 }
+
 
 solution pen(matrix(*ff)(matrix, matrix, matrix), matrix x0, double c, double dc, double epsilon, int Nmax, matrix ud1, matrix ud2)
 {

@@ -206,52 +206,52 @@ void lab1(){
   // eroer wystapi jesli d bedzie poza przedzialem [a,b] - linijka 32 w pseudokodzie
 }
 
-void lab2(){
-
+void lab2() {
     double epsilon = 1e-3;
-    int Nmax = 10000; //maksymalna liczba iteracji
-    double alpha = 0.5;
+    int Nmax = 10000; // maksymalna liczba iteracji
+    double alpha_Rosen = 1.5;
+    double alpha_HJ = 0.5;
+    double beta = 0.5;
     double x1, x2;
 
-//    x1 = -1 + m2d(rand_mat(1, 1)) * 2;
-//    x2 = -1 + m2d(rand_mat(1, 1)) * 2;
-//
-//    matrix x0(2, 1); //macierz 2x1 w przedziale [-1, 1]
-//    x0(0, 0) = x1;
-//    x0(1, 0) = x2;
+    std::ofstream file("combined_wyniki_optymalizacji.csv");
+    file << "x1(0);x2(0);x1* HJ;x2* HJ;y HJ;Liczba wywołań HJ;Czy Globalne HJ;x1* Rosen;x2* Rosen;y Rosen;Liczba wywołań Rosen;Czy Globalne Rosen\n";
 
-
-  //  solution opt = HJ(ff3T, x0, 0.01, alpha, epsilon, Nmax);
-//    cout << "Optymalne x: (" << opt.x(0) << ", " << opt.x(1) << ")"<< endl;
-//    cout << "Wartość funkcji celu: " << opt.y << endl;
-
-    std::ofstream file("wyniki_optymalizacji.csv");
-    file << "x1(0);x2(0);x1*;x2*;y;Liczba wywołań;Czy Globalne\n";
-
-    for(int i = 0; i < 100; i++){
+   // for (int i = 0; i < 100; i++) {
+        // Generowanie losowych wartości dla x1 i x2
         x1 = -1 + m2d(rand_mat(1, 1)) * 2;
         x2 = -1 + m2d(rand_mat(1, 1)) * 2;
 
-        matrix x0(2, 1); //macierz 2x1 w przedziale [-1, 1]
+        matrix x0(2, 1); // macierz 2x1 w przedziale [-1, 1]
         x0(0, 0) = x1;
         x0(1, 0) = x2;
-        solution opt = HJ(ff3T, x0, 0.001, alpha, epsilon, Nmax);
 
-        file << replaceDotWithComma(x1) << ";"
-             << replaceDotWithComma(x2) << ";"
-             << replaceDotWithComma(opt.x(0) ) << ";"
-             << replaceDotWithComma(opt.x(1)) << ";"
-             << replaceDotWithComma(m2d(opt.y)) << ";"
-             << solution::f_calls << ";"
-             << (ifGlobal(m2d(opt.y)) ? "TAK" : "NIE") << "\n";
+        // Optymalizacja metodą Hooke'a-Jeevesa
+        solution opt_HJ = HJ(ff3T, x0, 0.05, alpha_HJ, epsilon, Nmax);
+
+//        // Zapisywanie wyników dla HJ
+//        file << replaceDotWithComma(x1) << ";"
+//             << replaceDotWithComma(x2) << ";"
+//             << replaceDotWithComma(opt_HJ.x(0)) << ";"
+//             << replaceDotWithComma(opt_HJ.x(1)) << ";"
+//             << replaceDotWithComma(m2d(opt_HJ.y)) << ";"
+//             << solution::f_calls << ";"
+//             << (ifGlobal(m2d(opt_HJ.y)) ? "TAK" : "NIE") << ";";
 
         solution::clear_calls();
-    }
+        solution opt_Rosen = Rosen(ff3T, x0, 0.05, alpha_Rosen, beta, epsilon, Nmax);
+
+//        file << replaceDotWithComma(opt_Rosen.x(0)) << ";"
+//             << replaceDotWithComma(opt_Rosen.x(1)) << ";"
+//             << replaceDotWithComma(m2d(opt_Rosen.y)) << ";"
+//             << solution::f_calls << ";"
+//             << (ifGlobal(m2d(opt_Rosen.y)) ? "TAK" : "NIE") << "\n";
+
+        solution::clear_calls();
+  //  }
 
     file.close();
-
 }
-
 
 void lab3()
 {
